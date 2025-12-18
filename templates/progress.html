@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>TaskScore – Fortschritt</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f5f7;
+        }
+        header {
+            background: #1f2933;
+            color: #fff;
+            padding: 16px 24px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+        main {
+            max-width: 900px;
+            margin: 24px auto;
+            padding: 0 16px 32px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #2563eb;
+            margin-right: 12px;
+        }
+        .nav a:hover { text-decoration: underline; }
+        .muted { color: #6b7280; font-size: 0.92rem; }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        @media (max-width: 760px) {
+            .kpis { grid-template-columns: 1fr; }
+        }
+        .kpi {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+        .kpi .label { font-size: 0.85rem; color: #6b7280; }
+        .kpi .value { font-size: 1.2rem; font-weight: 700; margin-top: 4px; }
+
+        .progress-wrap { margin-top: 12px; }
+        .progress-bar {
+            height: 14px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .progress-bar > div {
+            height: 100%;
+            background: #22c55e;
+            width: 0%;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: #e5edff;
+            color: #1e3a8a;
+            font-size: 0.8rem;
+        }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 6px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>TaskScore – Fortschritt</h1>
+</header>
+
+<main>
+    <section class="card nav">
+        <a href="/">Start</a>
+        <a href="/tasks">Aufgaben</a>
+        <a href="/plan">Wochenplan</a>
+    </section>
+
+    <section class="card">
+        <h2>Fortschritt dieser Woche</h2>
+        <p class="muted">
+            Hier siehst du deinen aktuellen Fortschritt, bezogen auf deine Aufgaben mit der jeweiligen Punkteverteilung .
+        </p>
+
+
+        {% set percent = 0 %}
+        {% if total_points and total_points > 0 %}
+            {% set percent = (done_points / total_points * 100) %}
+        {% endif %}
+
+        <div class="kpis">
+            <div class="kpi">
+                <div class="label">Wochenbudget</div>
+                <div class="value">{{ total_points }}</div>
+            </div>
+            <div class="kpi">
+                <div class="label">Erledigte Punkte</div>
+                <div class="value">{{ done_points }}</div>
+            </div>
+            <div class="kpi">
+                <div class="label">Fortschritt</div>
+                <div class="value">{{ percent|round(0) }}%</div>
+            </div>
+        </div>
+
+        <div class="progress-wrap">
+            <p class="muted">{{ done_points }} / {{ total_points }} Punkte</p>
+            <div class="progress-bar">
+                <div style="width: {{ percent }}%;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Geplante Funktionen</h2>
+        <ul>
+            <li>Automatische Fortschrittsberechnung aus gespeicherten Aufgaben</li>
+            <li>Status der Aufgaben</li>
+            <li>Erweiterte grafische Darstellung</li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>

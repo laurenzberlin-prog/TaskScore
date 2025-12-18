@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>TaskScore – Wochenplan</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f5f7;
+        }
+        header {
+            background: #1f2933;
+            color: #fff;
+            padding: 16px 24px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+        main {
+            max-width: 900px;
+            margin: 24px auto;
+            padding: 0 16px 32px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #2563eb;
+            margin-right: 12px;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        .muted {
+            color: #6b7280;
+            font-size: 0.92rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+        th {
+            font-size: 0.85rem;
+            color: #374151;
+        }
+
+        .bar {
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .bar > div {
+            height: 100%;
+            background: #2563eb;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: #e5edff;
+            color: #1e3a8a;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>TaskScore – Wochenplan</h1>
+</header>
+
+<main>
+    <section class="card nav">
+        <a href="/">Start</a>
+        <a href="/tasks">Aufgaben</a>
+        <a href="/progress">Fortschritt</a>
+    </section>
+
+    <section class="card">
+        <h2>Punkte-Verteilung pro Wochentag</h2>
+        <p class="muted">
+            Diese Ansicht zeigt, wie viele Punkte für jeden Wochentag geplant sind.
+            In einer späteren Version wird diese Verteilung automatisch aus den Tasks
+            (<code>weekday</code> und <code>points_total</code>) berechnet.
+        </p>
+
+        <p><span class="badge">Wochenbudget: 100 Punkte</span></p>
+
+        {% if weekly_points and weekly_points|length > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Tag</th>
+                    <th>Punkte</th>
+                    <th>Visualisierung</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for day, points in weekly_points.items() %}
+                <tr>
+                    <td><strong>{{ day }}</strong></td>
+                    <td>{{ points }}</td>
+                    <td>
+                        <div class="bar">
+                            <div style="width: {{ points }}%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p class="muted">
+                Noch keine Punkteverteilung vorhanden. Später werden die Punkte
+                automatisch aus den Tasks aggregiert.
+            </p>
+        {% endif %}
+    </section>
+
+    <section class="card">
+        <h2>Geplante Funktionen</h2>
+        <ul>
+            <li>Punktekonto der Tagespunkte aus den Aufgaben</li>
+            <li>Warnung bei Überschreitung des Budgets</li>
+            <li>Erweiterte grafische Darstellung </li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>

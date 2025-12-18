@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>TaskScore – Aufgaben</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f5f7;
+        }
+        header {
+            background: #1f2933;
+            color: #fff;
+            padding: 16px 24px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+        main {
+            max-width: 900px;
+            margin: 24px auto;
+            padding: 0 16px 32px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+        .nav a {
+            text-decoration: none;
+            color: #2563eb;
+            margin-right: 12px;
+        }
+        .nav a:hover { text-decoration: underline; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 760px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        label { display: block; font-size: 0.9rem; margin-top: 10px; }
+        input, select, textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            margin-top: 6px;
+            font-size: 0.95rem;
+            background: #fff;
+        }
+        textarea { min-height: 90px; resize: vertical; }
+
+        button {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        button:hover { opacity: 0.92; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+        th { font-size: 0.85rem; color: #374151; }
+        .muted { color: #6b7280; font-size: 0.9rem; }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: #e5edff;
+            color: #1e3a8a;
+            font-size: 0.8rem;
+        }
+        .right { text-align: right; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>TaskScore – Aufgaben</h1>
+</header>
+
+<main>
+    <section class="card nav">
+        <a href="/">Start</a>
+        <a href="/plan">Wochenplan</a>
+        <a href="/progress">Fortschritt</a>
+    </section>
+
+    <section class="card">
+        <h2>Wochen-Punktekonto</h2>
+        <p class="muted">
+            Pro Woche stehen 100 Punkte zur Verfügung.
+            Aufgaben werden nach geschätzem Zeitaufwand und Priorität mit entsprechenden Punkten bewertet.
+        </p>
+       
+    </section>
+
+    <div class="grid">
+        <section class="card">
+             <h2>Neue Aufgabe anlegen</h2>
+           
+
+            <form method="post" action="#">
+                <label for="title">Titel</label>
+                <input id="title" name="title" placeholder="z. B. Lernen, Sport, Haushalt" />
+
+                <label for="desc">Beschreibung</label>
+                <textarea id="desc" name="description" placeholder="Optional: Details zur Aufgabe"></textarea>
+
+                <label for="weekday">Wochentag</label>
+                <select id="weekday" name="weekday">
+                    <option>Montag</option>
+                    <option>Dienstag</option>
+                    <option>Mittwoch</option>
+                    <option>Donnerstag</option>
+                    <option>Freitag</option>
+                    <option>Samstag</option>
+                    <option>Sonntag</option>
+                </select>
+
+                <label for="points">Punkte</label>
+                <input id="points" name="points_total" type="number" min="0" placeholder="z. B. 10" />
+
+                <button type="submit">Aufgabe hinzufügen</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Geplante Aufgaben</h2>
+
+            {% if tasks and tasks|length > 0 %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Titel</th>
+                            <th>Tag</th>
+                            <th>Punkte</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in tasks %}
+                        <tr>
+                            <td>
+                                <strong>{{ t.title }}</strong><br>
+                                <span class="muted">{{ t.description }}</span>
+                            </td>
+                            <td>{{ t.weekday }}</td>
+                            <td>{{ t.points_total }}</td>
+                            <td>{{ t.status }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+               
+            {% endif %}
+        </section>
+    </div>
+</main>
+</body>
+</html>
